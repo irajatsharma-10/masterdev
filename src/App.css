@@ -1,0 +1,66 @@
+.codeblock1 {
+  width: 372.95px;
+  height: 287.05px;
+  border-radius: 100%;
+  left: calc(50% - 372.95px/2 - 76.5px );
+  top: calc(50% - 257.05px/2 - 86.8px );
+  background: linear-gradient(
+    123.77deg,
+    #8a2be2 -6.46%,
+    #ffa500 59.04%,
+    #f8f8ff 124.53%
+  );
+  opacity: 0.2;
+  filter: blur(34px);
+  transform: matrix(1, 0, -0.03, 1, 0, 0);
+}
+.codeblock2 {
+  width: 372.95px;
+  height: 287.05px;
+  border-radius: 100%;
+  left: calc(50% - 372.95px/2 - 76.5px );
+  top: calc(50% - 257.05px/2 - 86.8px );
+  background: linear-gradient(
+    123.77deg,
+    #2b8de2c5 -6.46%,
+    #1900ff9f 59.04%,
+    #f8fbff 124.53%
+  );
+  opacity: 0.2;
+  filter: blur(34px);
+  transform: matrix(1, 0, -0.03, 1, 0, 0);
+}
+.border-box {
+  border: 2px solid;
+  border-image-source: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0)
+  );
+  border-image-slice: 1;
+  background: linear-gradient(
+    111.93deg,
+    rgba(14, 26, 45, 0.24),
+    rgba(17, 30, 50, 0.38)
+  );
+  /* backdrop-filter: blur(26px); */
+}
+.bg_home{
+  background-image: url("./assets/Images/bghome.svg")
+}
+
+
+.form-style{
+  padding: 4px;
+  border-radius: 8px;
+  gap: 12px;
+  background-color: rgba(22, 29, 41, 1);
+  box-shadow: 0px 1px 2px 0px rgba(255, 255, 255, 0.18);
+  color: #636875
+}
+
+.label-style{
+  color: rgba(241, 242, 255, 1);
+  font-size: medium;
+
+}
