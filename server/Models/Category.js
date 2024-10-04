@@ -11,7 +11,7 @@ const CategorysSchema = new mongoose.Schema({
     },
     // one tag can be used for multiple course
     // python as a tag k multiple course ho skte h
-    course:[{
+    courses:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
     }],

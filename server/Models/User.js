@@ -43,9 +43,13 @@ const UserSchema = new mongoose.Schema({
         type: Date,
     },
     image:{
-        type:String,
-        required:true,
+        type: String,
+        trim:true,
     },
+    status: {
+		type: String,
+		enum: ["Draft", "Published"],
+	},
     courseProgress:[
         {
             type:mongoose.Schema.Types.ObjectId,

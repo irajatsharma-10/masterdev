@@ -82,7 +82,7 @@ function SignupForm() {
     ]
 
     return (
-        <div className="w-11/12 max-w-maxContent mt-20 px-[26%] mx-auto">
+        <>
             {/* Tab */}
             {/* allows shifting between instructor and student  */}
             <Tab tabData={tabData} field={accountType} setField={setAccountType} />
@@ -204,7 +204,7 @@ function SignupForm() {
                     Create Account
                 </button>
             </form>
-        </div>
+        </>
     )
 }
 

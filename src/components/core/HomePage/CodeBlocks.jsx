@@ -22,7 +22,7 @@ const CodeBlocks = ({ position, heading, subheading, ctabtn1, ctabtn2, codeColor
                             <FaArrowRight/>
                         </div>
                     </CTAbutton>
-                    <CTAbutton linkto = {ctabtn2.link} active = {ctabtn2.active} >
+                    <CTAbutton linkto={ctabtn2.link} active = {ctabtn2.active} >
                         {ctabtn2.text}
                     </CTAbutton>
                 </div>

@@ -2,9 +2,12 @@ const Profile = require("../Models/Profile");
 const User = require("../Models/User");
 const mongoose = require('mongoose');
 const { uploadImageToCloudinary } = require('../Utils/ImageUploader')
-
+const { convertSecondsToDuration } = require("../../src/utils/secondsTOduration");
+const CourseProgress = require("../Models/CourseProgress");
+const Course = require("../Models/Course")
 exports.updateProfile = async (req, res) => {
     try {
+
         // fetch data
         const { dateOfBirth = "", about = "", contactNumber = "", gender = "" } = req.body;
         // get user id (req.user = decode mein se mil jayegi)
@@ -33,11 +36,16 @@ exports.updateProfile = async (req, res) => {
         const updatedProfileDetails = await profileDetails.save();
         console.log(updatedProfileDetails);
 
+
+        // Find the updated user details
+        const updatedUserDetails = await User.findById(id)
+            .populate("additionalDetails")
+            .exec()
         // return response 
         res.status(200).json({
             success: true,
             message: " Profile upadated successfully",
-            profileDetails,
+            data: updatedUserDetails,
         })
 
 
@@ -53,6 +61,12 @@ exports.updateProfile = async (req, res) => {
 // update display profile
 exports.updateDisplayPicture = async (req, res) => {
     try {
+        if (!req.files || !req.files.DisplayKey) {
+            return res.status(400).json({
+                success: false,
+                message: "No file uploaded"
+            });
+        }
         // fetch data 
         const file = req.files.DisplayKey;
         console.log("Fetched file ", file)
@@ -218,5 +232,34 @@ exports.getEnrolledCourses = async (req, res) => {
             success: false,
             message: error.message,
         })
+    }
+}
+
+
+exports.instructorDashboard = async (req, res) => {
+    try {
+        const courseDetails = await Course.find({ instructor: req.user.id })
+
+        const courseData = courseDetails.map((course) => {
+            const totalStudentsEnrolled = course.studentsEnrolled.length
+            const totalAmountGenerated = totalStudentsEnrolled * course.price
+
+            // Create a new object with the additional fields
+            const courseDataWithStats = {
+                _id: course._id,
+                courseName: course.courseName,
+                courseDescription: course.courseDescription,
+                // Include other course properties as needed
+                totalStudentsEnrolled,
+                totalAmountGenerated,
+            }
+
+            return courseDataWithStats
+        })
+
+        res.status(200).json({ courses: courseData })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: "Server Error" })
     }
 }

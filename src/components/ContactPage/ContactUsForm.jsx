@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import CountryCode from "../../../data/countrycode.json"
-import { apiConnector } from "../../../services/apiconnector"
-import { contactusEndpoint } from "../../../services/apis"
+import CountryCode from "../../data/countrycode.json"
+import { apiConnector } from "../../services/apiconnector"
+import { contactusEndpoint } from "../../services/apis"
 import toast from 'react-hot-toast'
 
 const ContactUsForm = () => {
@@ -33,7 +33,7 @@ const ContactUsForm = () => {
             setLoading(false)
         }
     }
-    
+
 
     useEffect(() => {
         if (isSubmitSuccessful) {
@@ -111,24 +111,22 @@ const ContactUsForm = () => {
                 </label>
 
                 <div className="flex gap-5">
-                    <div className="flex w-[60px] flex-col gap-2 justify-center h-full">
-                        <select
-                            type="text"
-                            name="countrycode"
-                            id="country-code"
-                            placeholder="Enter first name"
-                            className="form-style h-[32px]"
-                            {...register("countrycode", { required: true })}
-                        >
-                            {CountryCode.map((ele, i) => {
-                                return (
-                                    <option key={i} value={ele.code}>
-                                        {ele.code}
-                                    </option>
-                                )
-                            })}
-                        </select>
-                    </div>
+                    <select
+                        type="text"
+                        name="countrycode"
+                        id="country-code"
+                        placeholder="Enter first name"
+                        className="form-style max-w-20"
+                        {...register("countrycode", { required: true })}
+                    >
+                        {CountryCode.map((ele, i) => {
+                            return (
+                                <option key={i} value={ele.code}>
+                                    {ele.code}
+                                </option>
+                            )
+                        })}
+                    </select>
                     <div className="flex w-[calc(100%-90px)] flex-col gap-2">
                         <input
                             type="number"

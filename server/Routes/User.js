@@ -11,7 +11,7 @@ const {auth} = require('../Middleware/auth');
 router.post('/login',login);
 router.post('/signup',signUp);
 router.post('/sendotp',sendOTP);
-// password change krne k liye authorisation required hogi
+// password change krne k liye Authorization required hogi
 router.post('/changepassword',auth,changePassword);
 
 router.post('/reset-password-token',resetPasswordToken);

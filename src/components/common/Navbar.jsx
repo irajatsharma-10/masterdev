@@ -1,71 +1,69 @@
-import { useEffect, useState } from "react"
-import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
-import { BsChevronDown } from "react-icons/bs"
-import { useSelector } from "react-redux"
-import { Link, matchPath, useLocation } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
+import { BsChevronDown } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { Link, matchPath, useLocation } from "react-router-dom";
 
-import logo from "../../assets/Images/masterDevName.jpg"
-import { NavbarLinks } from "../../data/navbar-links"
-import { apiConnector } from "../../services/apiconnector"
-import { categories } from "../../services/apis"
-import { endpoints } from "../../services/apis"
-import { ACCOUNT_TYPE } from "../../utils/constants"
-import ProfileDropdown from "../core/Auth/ProfileDropdown"
-
+import logo from "../../assets/Images/masterDevName.jpg";
+import { NavbarLinks } from "../../data/navbar-links";
+import { apiConnector } from "../../services/apiconnector";
+import { categories } from "../../services/apis";
+import { ACCOUNT_TYPE } from "../../utils/constants";
+import ProfileDropdown from "../core/Auth/ProfileDropdown";
 
 function Navbar() {
-    const {token} = useSelector((state) => state?.auth || {});
-    const {user} = useSelector((state) => state?.profile || {});
-    const {totalItems} = useSelector((state) => state?.cart || {});
-    const location = useLocation()
-    const [subLinks, setSubLinks] = useState([])
-    const [loading, setLoading] = useState(false)
+    const { token } = useSelector((state) => state?.auth || {});
+    const { user } = useSelector((state) => state?.profile || {});
+    const { totalItems } = useSelector((state) => state?.cart || {});
+    const location = useLocation();
+    const [subLinks, setSubLinks] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        (async () => {
-            setLoading(true)
+        const fetchCategories = async () => {
+            setLoading(true);
             try {
                 const res = await apiConnector("GET", categories.CATEGORIES_API);
-                console.log("Printing sublinks result...", res);
-                setSubLinks(res.data.data);
+                setSubLinks(res?.data?.data || []);
             } catch (error) {
-                console.log("Could not fetch Categories.", error)
+                console.error("Could not fetch Categories.", error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false)
-        })()
-    }, [])
+        };
 
+        fetchCategories();
+    }, []);
+    // console.log("Sublinks inside the navbar catalog",subLinks);
 
-
-    // path is the property of matchRoute function 
-    // matchRoute wiill take two parameter one is options and other is pathName 
-    const matchRoute = (route) => {
-        return matchPath({ path: route }, location.pathname)
-    }
+    const matchRoute = (route) => matchPath({ path: route }, location.pathname);
 
     return (
         <div
-            className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${location.pathname !== "/" ? "bg-richblack-800" : ""
-                } transition-all duration-200`}
+            className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${location.pathname !== "/" ? "bg-richblack-800" : ""} transition-all duration-200`}
         >
             <div className="flex w-11/12 max-w-maxContent items-center justify-between">
                 {/* Logo */}
                 <Link to="/">
-                    <img src={logo} alt="Logo" width={160} height={32} className="shadow-[2px_2px_10px_10px_rgba(34,120,71)] rounded-full bg-none border-none bg-clip-text" loading="lazy" />
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        width={160}
+                        height={32}
+                        className="shadow-[2px_2px_10px_10px_rgba(34,120,71)] rounded-full bg-none border-none bg-clip-text"
+                        loading="lazy"
+                    />
                 </Link>
+
                 {/* Navigation links */}
                 <nav className="hidden md:block">
                     <ul className="flex gap-x-6 text-richblack-25">
                         {NavbarLinks.map((link, index) => (
                             <li key={index}>
                                 {link.title === "Catalog" ? (
-                                    // subLinks are the category provided by the user/instructor (catolog mein)
                                     <>
                                         <div
-                                            className={`group relative flex cursor-pointer items-center gap-1 ${matchRoute("/catalog/:catalogName")
-                                                    ? "text-yellow-25"
-                                                    : "text-richblack-25"
-                                                }`}
+                                            className={`group relative flex cursor-pointer items-center gap-1 ${matchRoute("/catalog/:catalogName") ? "text-yellow-25" : "text-richblack-25"}`}
                                         >
                                             <p>{link.title}</p>
                                             <BsChevronDown />
@@ -73,23 +71,16 @@ function Navbar() {
                                                 <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
                                                 {loading ? (
                                                     <p className="text-center">Loading...</p>
-                                                ) : (subLinks && subLinks.length) ? (
-                                                    <>
-                                                        {subLinks
-                                                            // ?.filter(
-                                                            //     // filter the categories having the course in it
-                                                            //     (subLink) => subLink?.courses?.length > 0
-                                                            // )
-                                                            ?.map((subLink, i) => (
-                                                                <Link
-                                                                    to={`/catalog/${subLink.link}`}
-                                                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                                                    key={i}
-                                                                >
-                                                                    <p>{subLink.title}</p>
-                                                                </Link>
-                                                            ))}
-                                                    </>
+                                                ) : subLinks?.length ? (
+                                                    subLinks.map((subLink, i) => (
+                                                        <Link
+                                                            to={`/catalog/${subLink?.name.split(" ").join("-").toLowerCase()}`}
+                                                            className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50 text-richblack-800"
+                                                            key={i}
+                                                        >
+                                                            <p className="text-richblack-800">{subLink?.name}</p>
+                                                        </Link>
+                                                    ))
                                                 ) : (
                                                     <p className="text-center">No Courses Found</p>
                                                 )}
@@ -98,12 +89,7 @@ function Navbar() {
                                     </>
                                 ) : (
                                     <Link to={link?.path}>
-                                        <p
-                                            className={`${matchRoute(link?.path)
-                                                    ? "text-yellow-25"
-                                                    : "text-richblack-25"
-                                                }`}
-                                        >
+                                        <p className={`${matchRoute(link?.path) ? "text-yellow-25" : "text-richblack-25"}`}>
                                             {link.title}
                                         </p>
                                     </Link>
@@ -113,8 +99,7 @@ function Navbar() {
                     </ul>
                 </nav>
 
-                
-                {/* Login / Signup / Dashboard ( instructor ko cart nhi dikhana) */}
+                {/* Login / Signup / Dashboard (instructor should not see cart) */}
                 <div className="hidden items-center gap-x-4 md:flex">
                     {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
                         <Link to="/dashboard/cart" className="relative">
@@ -126,28 +111,31 @@ function Navbar() {
                             )}
                         </Link>
                     )}
-                    {token === null && (
-                        <Link to="/login">
-                            <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
-                                Log in
-                            </button>
-                        </Link>
+                    {token === null ? (
+                        <>
+                            <Link to="/login">
+                                <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                                    Log in
+                                </button>
+                            </Link>
+                            <Link to="/signup">
+                                <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+                                    Sign up
+                                </button>
+                            </Link>
+                        </>
+                    ) : (
+                        <ProfileDropdown />
                     )}
-                    {token === null && (
-                        <Link to= {"/signup"}>
-                            <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
-                                Sign up
-                            </button>
-                        </Link>
-                    )}
-                    {token !== null && <ProfileDropdown />}
                 </div>
+
+                {/* Mobile Menu Button */}
                 <button className="mr-4 md:hidden">
                     <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
                 </button>
             </div>
         </div>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;

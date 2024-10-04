@@ -10,6 +10,7 @@ export default function EnrolledCourses() {
     const { token } = useSelector((state) => state.auth)
     const navigate = useNavigate()
 
+
     const [enrolledCourses, setEnrolledCourses] = useState(null)
     const getEnrolledCourses = async () => {
         try {
@@ -23,13 +24,14 @@ export default function EnrolledCourses() {
     useEffect(() => {
         getEnrolledCourses();
     }, [])
+    
 
     return (
         <>
             <div className="text-3xl text-richblack-50">Enrolled Courses</div>
             {!enrolledCourses ? (
                 <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
-                    <div className="spinner"></div>
+                    <div className=""></div>
                 </div>
             ) : !enrolledCourses.length ? (
                 <p className="grid h-[10vh] w-full place-content-center text-richblack-5">

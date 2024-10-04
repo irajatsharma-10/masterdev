@@ -3,16 +3,15 @@ const express = require("express")
 const router = express.Router()
 
 // Import the Controllers
-
 // Course Controllers Import
 const {
     createCourse,
     getAllCourses,
     getCourseDetails,
-    // getFullCourseDetails,
-    // editCourse,
-    // getInstructorCourses,
-    // deleteCourse,
+    getFullCourseDetails,
+    editCourse,
+    getInstructorCourses,
+    deleteCourse,
 } = require("../Controllers/Course")
 
 
@@ -43,10 +42,9 @@ const {
     getAverageRating,
     getAllRating,
 } = require("../Controllers/RatingAndReview")
-
-// const {
-//     updateCourseProgress
-// } = require("../controllers/courseProgress");
+const {
+    updateCourseProgress
+} = require("../Controllers/CourseProgress");
 
 // Importing Middleware
 const { auth, isInstructor, isStudent, isAdmin } = require("../Middleware/auth")
@@ -60,7 +58,7 @@ router.post("/createCourse", auth, isInstructor, createCourse)
 //Add a Section to a Course
 router.post("/addSection", auth, isInstructor, createSection)
 // Update a Section
-router.post("/updateSection", auth, isInstructor, updateSection)
+router.put("/updateSection", auth, isInstructor, updateSection)
 // Delete a Section
 router.post("/deleteSection", auth, isInstructor, deleteSection)
 // Edit Sub Section
@@ -74,15 +72,15 @@ router.get("/getAllCourses", getAllCourses)
 // Get Details for a Specific Courses
 router.post("/getCourseDetails", getCourseDetails)
 // Get Details for a Specific Courses
-// router.post("/getFullCourseDetails", auth, getFullCourseDetails)
+router.post("/getFullCourseDetails", auth, getFullCourseDetails)
 // Edit Course routes
-// router.post("/editCourse", auth, isInstructor, editCourse)
+router.post("/editCourse", auth, isInstructor, editCourse)
 // Get all Courses Under a Specific Instructor
-// router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
+router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses)
 // Delete a Course
-// router.delete("/deleteCourse", deleteCourse)
+router.delete("/deleteCourse", deleteCourse)
 
-// router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

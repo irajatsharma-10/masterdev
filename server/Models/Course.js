@@ -46,6 +46,17 @@ const CourseSchema = new mongoose.Schema({
     tag:{
         type:[String],
     },// here we are using tag to increase the reach of the video (SEO types)
+    instructions: {
+		type: [String],
+	},
+	status: {
+		type: String,
+		enum: ["Draft", "Published"],
+	},
+	createdAt: {
+		type:Date,
+		default:Date.now
+	},
 })
 
 module.exports  = mongoose.model('Course', CourseSchema);

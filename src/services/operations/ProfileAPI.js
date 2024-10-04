@@ -20,7 +20,7 @@ export function getUserDetails(token, navigate) {
             if (!response.data.success) {
                 throw new Error(response.data.message)
             }
-            const userImage = response.data.data.image
+            let userImage = response.data.data.image
                 ? response.data.data.image
                 : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
             dispatch(setUser({ ...response.data.data, image: userImage }))
@@ -43,7 +43,7 @@ export async function getUserEnrolledCourses(token) {
             GET_USER_ENROLLED_COURSES_API,
             null,
             {
-                Authorisation: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             }
         )
         // console.log(
