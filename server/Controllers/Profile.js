@@ -1,8 +1,7 @@
 const Profile = require("../Models/Profile");
 const User = require("../Models/User");
-const mongoose = require('mongoose');
 const { uploadImageToCloudinary } = require('../Utils/ImageUploader')
-const { convertSecondsToDuration } = require("../../src/utils/secondsTOduration");
+const { convertSecondsToDuration } = require("../Utils/SecToDuration");
 const CourseProgress = require("../Models/CourseProgress");
 const Course = require("../Models/Course")
 exports.updateProfile = async (req, res) => {
